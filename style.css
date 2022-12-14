@@ -1,0 +1,22 @@
+body{
+    overflow-x: hidden;
+}
+#header{
+    background: red;
+    position: fixed;
+}
+#header a{
+   text-decoration: none;
+   color: white;
+}
+#footer{
+    background:red;
+    text-decoration: none;
+}
+#footer h6{
+    color: white;
+}
+#footer a{
+    text-decoration: none;
+}
+/*  */
