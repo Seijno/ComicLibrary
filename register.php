@@ -1,6 +1,6 @@
 <?php
 
-// check if user is already logged in if so redirect to store pag
+// check if user is already logged in if so redirect to store page
 if (isset($_SESSION['username'])) {
     header('Location: store.php');
 }

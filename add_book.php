@@ -7,7 +7,7 @@
     <title>Add book</title>
 </head>
 <body>
-    <!-- Form to add abook to database -->
+    <!-- Form to add a book to database -->
     <h2>Add Book</h2>
     <form action="add_book.php" method="post">
         <label for="title">Title:</label>

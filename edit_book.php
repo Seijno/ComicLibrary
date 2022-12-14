@@ -10,7 +10,7 @@
    
 <?php
 
-// get the post id of thebook to edit and if not set, redirect to the overview page
+// get the post id of the book to edit and if not set, redirect to the overview page
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
 } else {
