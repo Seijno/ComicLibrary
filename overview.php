@@ -20,12 +20,19 @@ todo:
     
     <!-- search bar to search for books by titel -->
     <form action='overview.php' method='post'>
-        <label for='search'>Search</label>
         <input type='text' name='search' id='search'>
         <input type='submit' value='Search'>
     </form>
 
     <?php
+    // delete book from database
+    if (isset($_POST['delete'])) {
+        $query = "DELETE FROM book WHERE id = :id";
+        $statement = $conn->prepare($query);
+        $statement->bindValue(':id', $_POST['id']);
+        $statement->execute();
+        $statement->closeCursor();
+    }
     
     // Get all books in the database
     $query = "SELECT id, title, description, price FROM book";
@@ -57,15 +64,6 @@ todo:
         echo "</tr>";
     }
     echo "</table>";
-
-    // delete book from database
-    if (isset($_POST['delete'])) {
-        $query = "DELETE FROM book WHERE id = :id";
-        $statement = $conn->prepare($query);
-        $statement->bindValue(':id', $_POST['id']);
-        $statement->execute();
-        $statement->closeCursor();
-    }
     ?>
 </body>
 </html>
