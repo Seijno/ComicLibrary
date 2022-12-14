@@ -75,6 +75,7 @@ $statement->closeCursor();
     <input type="text" name="price" value="<?php echo $book['price']; ?>"><br>
     <label>&nbsp;</label>
     <input type="submit" name="update_book" value="Update Book"><br>
+    <a href="overview.php">Back to overview</a>
 </form>
 </body>
 </html>

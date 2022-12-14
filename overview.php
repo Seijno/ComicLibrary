@@ -24,6 +24,11 @@ todo:
         <input type='submit' value='Search'>
     </form>
 
+    <!-- button to add a book -->
+    <form action='add_book.php' method='post'>
+        <input type='submit' name='add' value='Add Book'>
+    </form>
+
     <?php
     // delete book from database
     if (isset($_POST['delete'])) {
