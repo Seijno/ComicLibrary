@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 23 nov 2022 om 11:46
+-- Gegenereerd op: 14 dec 2022 om 11:02
 -- Serverversie: 10.4.24-MariaDB
 -- PHP-versie: 8.1.6
 
@@ -35,7 +35,20 @@ CREATE TABLE `book` (
   `price` int(10) NOT NULL,
   `description` varchar(256) NOT NULL,
   `pdf` blob NOT NULL,
+  `image` blob NOT NULL,
   `store_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `library`
+--
+
+CREATE TABLE `library` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `book_id` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -75,6 +88,12 @@ ALTER TABLE `book`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexen voor tabel `library`
+--
+ALTER TABLE `library`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexen voor tabel `store`
 --
 ALTER TABLE `store`
@@ -95,6 +114,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `book`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT voor een tabel `library`
+--
+ALTER TABLE `library`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT voor een tabel `store`
