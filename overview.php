@@ -2,12 +2,6 @@
 include_once("connect.php");
 ?>
 
-<!-- 
-todo: 
-    Beveliging zodat alleen admins de pagina kunnen zien
-    edit pagina aanmaken en delete functie aanpassen
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +11,8 @@ todo:
     <title>Overview</title>
 </head>
 <body>
+
+    <h2>Overview</h2>
     
     <!-- search bar to search for books by titel -->
     <form action='overview.php' method='post'>

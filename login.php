@@ -1,4 +1,10 @@
 <?php
+
+// check if user is already logged in if so redirect to store page
+if (isset($_SESSION['username'])) {
+    header('Location: store.php');
+}
+
 include_once("connect.php");
 ?>
 
@@ -37,7 +43,6 @@ include_once("connect.php");
                 session_start();
                 // Set the session variables
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['email'] = $user['email'];
                 // Redirect to the home page
                 header("Location: index.php");
             } else {

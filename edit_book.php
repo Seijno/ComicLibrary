@@ -1,3 +1,11 @@
+<?php
+// check if user is an admin
+// if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
+//     header("Location: index.php");
+//     exit();
+// }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
