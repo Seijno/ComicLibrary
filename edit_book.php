@@ -1,11 +1,3 @@
-<?php
-// check if user is an admin
-// if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
-//     header("Location: index.php");
-//     exit();
-// }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +10,12 @@
    
 <?php
 
-// get the post id of the book to edit and if not set, redirect to the overview page
+// get the post id of thebook to edit and if not set, redirect to the overview page
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
 } else {
     header('Location: overview.php');
-}
+} 
 
 // check if the edit form has been submitted
 if (isset($_POST['update_book'])) {

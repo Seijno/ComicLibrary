@@ -26,7 +26,7 @@ include_once("connect.php");
     </form>
 
     <?php
-    // delete book from database
+    // delete book fromdatabase 
     if (isset($_POST['delete'])) {
         $query = "DELETE FROM book WHERE id = :id";
         $statement = $conn->prepare($query);

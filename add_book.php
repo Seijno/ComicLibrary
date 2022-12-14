@@ -1,11 +1,3 @@
-<?php
-// check if user is an admin
-// if (!isset($_SESSION['admin']) || $_SESSION['admin'] != true) {
-//     header("Location: index.php");
-//     exit();
-// }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +7,7 @@
     <title>Add book</title>
 </head>
 <body>
-    <!-- Form to add a book to database -->
+    <!-- Form to add abook to database -->
     <h2>Add Book</h2>
     <form action="add_book.php" method="post">
         <label for="title">Title:</label>
