@@ -1,4 +1,10 @@
 <?php
+
+// check if useris already logged in if so redirect to store page
+if (isset($_SESSION['username'])) {
+    header('Location: store.php');
+}
+
 include_once("connect.php");
 ?>
 
@@ -30,7 +36,7 @@ include_once("connect.php");
         $statement->execute();
         $user = $statement->fetch();
         $statement->closeCursor();
-        // If the user is in the database, check if the password is correct
+        // If the user is  in the database, check if the password is correct
         if ($user != false) {
             if (password_verify($_POST['password'], $user['password'])) {
                 // Start a session
@@ -38,9 +44,8 @@ include_once("connect.php");
                 // Set the session variables
                 $_SESSION["id"] = $user["id"];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['email'] = $user['email'];
                 // Redirect to the home page
-                header("Location: index.php");
+                header("Location: overview.php");
             } else {
                 echo "Incorrect password";
             }

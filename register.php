@@ -1,4 +1,10 @@
 <?php
+
+// check if user is already logged in if so redirect to store page
+if (isset($_SESSION['username'])) {
+    header('Location: store.php');
+}
+
 include_once("connect.php");
 ?>
 
@@ -25,7 +31,7 @@ include_once("connect.php");
 
     <?php
     if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirmPassword'])) {
-        // Check if the password and confirm password fields match
+        // Check if the password and confirm password fields match 
         if ($_POST['password'] == $_POST['confirmPassword']) {
             // Check if the user is already in the database
             $query = "SELECT * FROM user WHERE username = :username OR email = :email"; 

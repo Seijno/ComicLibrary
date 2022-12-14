@@ -15,7 +15,7 @@ if (isset($_POST['id'])) {
     $id = $_POST['id'];
 } else {
     header('Location: overview.php');
-}
+} 
 
 // check if the edit form has been submitted
 if (isset($_POST['update_book'])) {
