@@ -36,6 +36,7 @@ include_once("connect.php");
                 // Start a session
                 session_start();
                 // Set the session variables
+                $_SESSION["id"] = $user["id"];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $user['email'];
                 // Redirect to the home page
