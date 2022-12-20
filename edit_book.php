@@ -24,20 +24,22 @@ if (isset($_POST['update_book'])) {
     $author = $_POST['author'];
     $genre = $_POST['genre'];
     $price = $_POST['price'];
-
+    $image = file_get_contents($_FILES['image']['tmp_name']);
+    
     // validate the input data
-    if (empty($title) || empty($author) || empty($genre) || empty($price)) {
+    if (empty($title) || empty($author) || empty($genre) || empty($price) || empty($image)) {
         $result = "Invalid book data. Check all fields and try again.";
     } else {
         // update the book data in the database
         require_once('connect.php');
-        $query = "UPDATE book SET title = :title, author = :author, genre = :genre, price = :price WHERE id = :id";
+        $query = "UPDATE book SET title = :title, author = :author, genre = :genre, price = :price, image = :image WHERE id = :id";
         $statement = $conn->prepare($query);
         $statement->bindValue(':id', $id);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':author', $author);
         $statement->bindValue(':genre', $genre);
         $statement->bindValue(':price', $price);
+        $statement->bindValue(':image', $image);
         $statement->execute();
         $statement->closeCursor();
         $result = "Book updated successfully.";
@@ -73,6 +75,9 @@ $statement->closeCursor();
     <input type="text" name="genre" value="<?php echo $book['genre']; ?>"><br>
     <label>Price:</label>
     <input type="text" name="price" value="<?php echo $book['price']; ?>"><br>
+    <label>Cover image:</label>
+    <input type="file" name="image" value="<?php echo $book['image']; ?>"><br>
+
     <label>&nbsp;</label>
     <input type="submit" name="update_book" value="Update Book"><br>
     <a href="overview.php">Back to overview</a>
