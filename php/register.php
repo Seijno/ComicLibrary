@@ -1,35 +1,14 @@
 <?php
 include_once("connect.php");
-    // Check if the username and password fields are set
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        // Check if the user is in the database
-        $query = "SELECT * FROM user WHERE username = :username";
-        $statement = $conn->prepare($query);
-        $statement->bindValue(':username', $_POST['username']);
-        $statement->execute();
-        $user = $statement->fetch();
-        $statement->closeCursor();
-        // If the user is in the database, check if the password is correct
-        if ($user != false) {
-            if (password_verify($_POST['password'], $user['password'])) {
-                // Start a session
-                session_start();
-                // Set the session variables
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['email'] = $user['email'];
-                // Redirect to the home page
-                header("Location: index.php");
-            } else {
-                echo "Incorrect password";
-            }
-        } else {
-            echo "User does not exist";
-        }
-    }
-    ?>
-<html lang="en">
+?>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -116,15 +95,13 @@ include_once("connect.php");
         }
     </style>
 </head>
-
-<body class="text-center" cz-shortcut-listen="true">
-
-    <main class="form-signin w-100 m-auto">
+<body>
+<main class="form-signin w-100 m-auto">
         <form>
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
             <div class="form-floating">
-                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                <input type="email" class="form-control" placeholder="name@example.com" name="email" id="email" required>
                 <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating">
@@ -135,87 +112,52 @@ include_once("connect.php");
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 <label for="floatingPassword">Password</label>
             </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Same password" required>
+                <label for="floatingPassword">Confirm Password</label>
+            </div>
 
             <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" value="remember-me"> Remember me
                 </label>
             </div>
-            <button class="w-100 btn btn-lg btn-danger" type="submit">Sign in</button>
-            <p class="text-center">Are you new? Register <a href="register.php">here!</a></p>
-            <p class="mt-5 mb-3 text-muted">© 2017–2022</p>
+            <button class="w-100 btn btn-lg btn-danger" type="submit">Register</button>
+            <p class="text-center">Do you already have a account? Login <a href="login.php">here!</a></p>
+            <p class="mt-5 mb-3 text-muted text-center">© 2017–2022</p>
         </form>
     </main>
 
-
-
-
-
-    <script>
-        var returnedSuggestion = ''
-        let editor, doc, cursor, line, pos
-        document.addEventListener("keydown", (event) => {
-            setTimeout(() => {
-                editor = event.target.closest('.CodeMirror');
-                if (editor) {
-                    doc = editor.CodeMirror.getDoc()
-                    cursor = doc.getCursor()
-                    line = doc.getLine(cursor.line)
-                    pos = {
-                        line: cursor.line,
-                        ch: line.length
-                    }
-                    if (event.key == "Enter") {
-                        var query = doc.getRange({
-                            line: Math.max(0, cursor.line - 10),
-                            ch: 0
-                        }, {
-                            line: cursor.line,
-                            ch: 0
-                        })
-                        window.postMessage({
-                            source: 'getSuggestion',
-                            payload: {
-                                data: query
-                            }
-                        })
-                        //displayGrey(query)
-                    } else if (event.key == "ArrowRight") {
-                        acceptTab(returnedSuggestion)
-                    }
-                }
-            }, 0)
-        })
-
-        function acceptTab(text) {
-            if (suggestionDisplayed) {
-                doc.replaceRange(text, pos)
-                suggestionDisplayed = false
+    <?php
+    if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirmPassword'])) {
+        // Check if the password and confirm password fields match
+        if ($_POST['password'] == $_POST['confirmPassword']) {
+            // Check if the user is already in the database
+            $query = "SELECT * FROM user WHERE username = :username OR email = :email"; 
+            $statement = $conn->prepare($query);
+            $statement->bindValue(':username', $_POST['username']);
+            $statement->bindValue(':email', $_POST['email']);
+            $statement->execute();
+            $user = $statement->fetch();
+            $statement->closeCursor();
+            // If the user is not in the database, create a new user
+            if ($user == false) {
+                $query = "INSERT INTO user (username, email, password) VALUES (:username, :email, :password)";
+                $statement = $conn->prepare($query);
+                $statement->bindValue(':username', $_POST['username']);
+                $statement->bindValue(':email', $_POST['email']);
+                $statement->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT));
+                $statement->execute();
+                $statement->closeCursor();
+                // Redirect to the login page
+                header("Location: login.php");
+            } else {
+                echo "User already exists";
             }
+        } else {
+            echo "Passwords do not match";
         }
-
-        function displayGrey(text) {
-            var element = document.createElement('span')
-            element.innerText = text
-            element.style = 'color:grey'
-            var lineIndex = pos.line;
-            editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
-            suggestionDisplayed = true
-        }
-        window.addEventListener('message', (event) => {
-            if (event.source !== window) return
-            if (event.data.source == 'return') {
-                returnedSuggestion = event.data.payload.data
-                displayGrey(event.data.payload.data)
-            }
-        })
-    </script>
+    }
+    ?>
 </body>
-
-</html>
-
-
-
-</body>
-
 </html>
