@@ -30,6 +30,7 @@ include_once("connect.php");
     </form>
 
     <?php
+
     if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirmPassword'])) {
         // Check if the password and confirm password fields match 
         if ($_POST['password'] == $_POST['confirmPassword']) {
@@ -50,6 +51,13 @@ include_once("connect.php");
                 $statement->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT));
                 $statement->execute();
                 $statement->closeCursor();
+
+                // Send confirmation email to user (werkt niet zonder mail server)
+                // $to = $_POST['email'];
+                // $subject = "Comic Library Registration";
+                // $message = "Thank you for registering with Comic Library. You can now log in to your account.";
+                // mail($to, $subject, $message);                
+
                 // Redirect to the login page
                 header("Location: login.php");
             } else {
