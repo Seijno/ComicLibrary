@@ -120,7 +120,7 @@ include_once("connect.php");
 <body class="text-center" cz-shortcut-listen="true">
 
     <main class="form-signin w-100 m-auto">
-        <form>
+        <form method="POST" action="">
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
             <div class="form-floating">

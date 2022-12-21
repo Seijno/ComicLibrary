@@ -97,7 +97,7 @@ include_once("connect.php");
 </head>
 <body>
 <main class="form-signin w-100 m-auto">
-        <form>
+        <form method="POST" action="">
             <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
             <div class="form-floating">
