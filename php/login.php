@@ -22,8 +22,6 @@ include_once("connect.php");
             } else {
                 echo "Incorrect password";
             }
-        } else {
-            echo "User does not exist";
         }
     }
     ?>

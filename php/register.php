@@ -1,4 +1,10 @@
 <?php
+
+// check if user is already logged in if so redirect to store page
+if (isset($_SESSION['username'])) {
+    header('Location: store.php');
+}
+
 include_once("connect.php");
 ?>
 
@@ -95,42 +101,43 @@ include_once("connect.php");
         }
     </style>
 </head>
-<body>
-<main class="form-signin w-100 m-auto">
-        <form method="POST" action="">
-            <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+<body class="text-center" cz-shortcut-listen="true">
 
-            <div class="form-floating">
-                <input type="email" class="form-control" placeholder="name@example.com" name="email" id="email" required>
-                <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating">
-                <input type="text" class="form-control" placeholder="name" name="username" id="username" required>
-                <label for="floatingInput">Username</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                <label for="floatingPassword">Password</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Same password" required>
-                <label for="floatingPassword">Confirm Password</label>
-            </div>
+    <main class="form-signin w-100 m-auto">
+            <form method="post" action="login.php">
+                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
-            </div>
-            <button class="w-100 btn btn-lg btn-danger" type="submit">Register</button>
-            <p class="text-center">Do you already have a account? Login <a href="login.php">here!</a></p>
-            <p class="mt-5 mb-3 text-muted text-center">© 2017–2022</p>
-        </form>
-    </main>
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                    <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="name" name="username" id="username" required>
+                    <label for="floatingInput">Username</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Password" required>
+                    <label for="floatingPassword">Password confirm</label>
+                </div>
 
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-danger" value="register" type="submit">Sign in</button>
+                <p class="text-center">Do you already have a account? Login <a href="login.php">here!</a></p>
+                <p class="mt-5 mb-3 text-muted">© 2017–2022</p>
+            </form>
+        </main>
     <?php
+
     if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirmPassword'])) {
-        // Check if the password and confirm password fields match
+        // Check if the password and confirm password fields match 
         if ($_POST['password'] == $_POST['confirmPassword']) {
             // Check if the user is already in the database
             $query = "SELECT * FROM user WHERE username = :username OR email = :email"; 
@@ -149,8 +156,15 @@ include_once("connect.php");
                 $statement->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT));
                 $statement->execute();
                 $statement->closeCursor();
+
+                // Send confirmation email to user (werkt niet zonder mail server)
+                // $to = $_POST['email'];
+                // $subject = "Comic Library Registration";
+                // $message = "Thank you for registering with Comic Library. You can now log in to your account.";
+                // mail($to, $subject, $message);                
+
                 // Redirect to the login page
-                header("Location: login.php");
+                // header("Location: login.php");
             } else {
                 echo "User already exists";
             }
@@ -161,4 +175,3 @@ include_once("connect.php");
     ?>
 </body>
 </html>
-<!-- needed for commit -->
