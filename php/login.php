@@ -21,7 +21,7 @@ include_once("connect.php");
                 header("Location: index.php");
             } else {
                 echo "Incorrect password";
-            }
+            } //user already exist weg gehaald voor onnodige melding//
         }
     }
     ?>

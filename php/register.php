@@ -104,7 +104,7 @@ include_once("connect.php");
 <body class="text-center" cz-shortcut-listen="true">
 
     <main class="form-signin w-100 m-auto">
-            <form method="post" action="login.php">
+        <form method="post" action="login.php"> <!--loopt smooth over -->
                 <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
                 <div class="form-floating">
