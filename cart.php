@@ -11,7 +11,7 @@
 <body>
 <h2>Cart</h2>
 
-<form action='buy.php' method='post'>
+<form action='checkout.php' method='post'>
     <div id="cart"></div>
     <div id="total"></div>
 </form>
@@ -35,18 +35,18 @@
             $('#cart').append(`
                 <div class="card">
                     <h3>${title}</h3>
-                    <p>${price}</p>
-                    <input type="hidden" name="id" value="${id}">
+                    <p>$${price}</p>
+                    <input type="hidden" name="id[]" value="${id}">
                     <button type="button" onclick="removeFromCart(${id})">Remove</button><br><br><br>
                 </div>
             `);
         }
 
-        // add buy button
-        $('#cart').append(`
+        // add buy button and total price
+        $('#total').append(`
             <button type="submit" name="buy">Buy</button>
+            <h3>Total: $${total}</h3>
         `);
-
     } else {
         // if cart is empty display message
         $('#cart').append(`
@@ -94,6 +94,7 @@
         localStorage.setItem('cart', JSON.stringify(newBooks));
         location.reload();
     }
+
 </script>
 </body>
 </html>

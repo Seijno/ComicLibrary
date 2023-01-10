@@ -30,7 +30,7 @@
         <div class='card'>
             <img src='data:image/jpeg;base64,".base64_encode($image)."'/>
             <a href='./product.php?id=".$id."'><h3>$title</h3></a>
-            <p>$price</p>
+            <p>$$price</p>
             <form action='#' method='post'>
                 <input type='hidden' name='id' value='$id'>
                 <button type='submit' name='add_to_cart'>Add to cart</button>
@@ -59,15 +59,13 @@
             let cart = localStorage.getItem('cart');
             if (cart == null) {
                 let products = [];
-                let product = {id: $id, title: '$title', price: $price, image: '$image'};
-                products.push(product);
-                localStorage.setItem('cart', JSON.stringify(products));
             } else {
                 let products = JSON.parse(cart);
-                let product = {id: $id, title: '$title', price: $price, image: '$image'};
-                products.push(product);
-                localStorage.setItem('cart', JSON.stringify(products));
             }
+
+            let product = {id: $id, title: '$title', price: $price, image: '$image'};
+            products.push(product);
+            localStorage.setItem('cart', JSON.stringify(products));
         </script>
         ";
     }
