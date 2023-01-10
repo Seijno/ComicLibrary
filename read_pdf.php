@@ -14,11 +14,9 @@ $result = $query->fetch(PDO::FETCH_ASSOC);
 if ($result) {
     $array = str_replace(",", " ", $result["book_id"]);
     $array = explode(" ", $array);
-
-    var_dump($array);
     
-    if (!array_key_exists($_GET["id"], $array)) {
-        // header("Location: library.php");
+    if (!in_array($_GET["id"], $array)) {
+        header("Location: library.php");
     }
 }
 
@@ -29,10 +27,10 @@ $query->execute();
 $result = $query->fetch(PDO::FETCH_ASSOC);
 
 if ($result) {
-    // $file = $result["pdf"];
-    // header('Content-type: application/pdf');
-    // echo $file;
-    // exit();
+    $file = $result["pdf"];
+    header('Content-type: application/pdf');
+    echo $file;
+    exit();
 }   
 
 
@@ -47,6 +45,6 @@ if ($result) {
     <title>Document</title>
 </head>
 <body>
-    <!-- <object data="data:application/pdf;base64,<?php echo base64_encode($pdf);?>" type="application/pdf" height="100%" width="100%"></object> -->
+    <?php echo base64_encode($pdf);?>
 </body>
 </html>
