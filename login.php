@@ -44,6 +44,7 @@ include_once("connect.php");
                 // Set the session variables
                 $_SESSION["id"] = $user["id"];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['id'] = $user['id'];
                 // Redirect to the home page
                 header("Location: overview.php");
             } else {
