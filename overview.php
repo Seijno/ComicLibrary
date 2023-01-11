@@ -9,6 +9,11 @@ include_once("connect.php");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Overview</title>
+    <style>
+        th {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -35,18 +40,21 @@ include_once("connect.php");
         $statement->closeCursor();
     }
     
-    // Get all books in the database
-    $query = "SELECT id, title, description, price FROM book";
+    // Get all books from the database where the store owner is the current user
+    session_start();
+    $query = "SELECT book.id, book.title, book.description, book.price FROM book INNER JOIN store WHERE store.id = book.store_id AND store.owner_id = :owner_id";
     $statement = $conn->prepare($query);
+    $statement->bindValue(':owner_id', $_SESSION['id']);
     $statement->execute();
     $books = $statement->fetchAll();
     $statement->closeCursor();
 
-    // if the search bar is filled in, search for books with the titel that contains the search string
+    // if the search bar is filled in, search for books with the titel that contains the search string only get the books from the current user
     if (isset($_POST['search'])) {
-        $query = "SELECT id, title, description, price FROM book WHERE title LIKE :search";
+        $query = "SELECT book.id, book.title, book.description, book.price FROM book INNER JOIN store WHERE store.id = book.store_id AND store.owner_id = :owner_id AND book.title LIKE :search";
         $statement = $conn->prepare($query);
-        $statement->bindValue(':search', "%" . $_POST['search'] . "%");
+        $statement->bindValue(':owner_id', $_SESSION['id']);
+        $statement->bindValue(':search', '%' . $_POST['search'] . '%');
         $statement->execute();
         $books = $statement->fetchAll();
         $statement->closeCursor();
@@ -66,5 +74,63 @@ include_once("connect.php");
     }
     echo "</table>";
     ?>
+
+    <script>
+        // if the user clicks on the delete button, ask for confirmation
+        var deleteButtons = document.getElementsByName('delete');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].addEventListener('click', function(e) {
+                if (!confirm('Are you sure you want to delete this book?')) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        // if the user clicks on th inside the table header, sort the table by the column
+        var tableHeader = document.getElementsByTagName('th');
+        for (var i = 0; i < tableHeader.length; i++) {
+            tableHeader[i].addEventListener('click', function(e) {
+                sortTable(e.target.cellIndex);
+            });
+        }
+
+        // sort the table by the column and reverse the order if the column is already sorted
+        function sortTable(column) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementsByTagName('table')[0];
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName('tr');
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName('td')[column];
+                    y = rows[i + 1].getElementsByTagName('td')[column];
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>

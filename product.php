@@ -38,7 +38,7 @@ if (empty($book)) {
     echo "<p>Author: " . $book['author'] . "</p>";
     echo "<p>Description: " . $book['description'] . "</p>";
     echo "<p>Genre: " . $book['genre'] . "</p>";
-    echo "<p>Price: " . $book['price'] . "</p>";
+    echo "<p>$" . $book['price'] . "</p>";
     ?>
 </body>
 </html>
