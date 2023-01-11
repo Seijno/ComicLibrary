@@ -17,12 +17,13 @@
 </form>
 
 <script>
-    // get books from localstorage
     var books = removeDuplicates(JSON.parse(localStorage.getItem('cart')));
     var total = 0;
 
-    // check if cart is empty
-    if (books.length > 0) {
+    // Check if cart is empty
+    if (books != null && books.length > 0) {
+        // get books from localstorage
+
         // loop through books and append them to the cart
         for (var i = 0; i < books.length; i++) {
             var book = books[i];
@@ -51,7 +52,7 @@
         // if cart is empty display message
         $('#cart').append(`
             <div class="card">
-                <h3>Cart is empty</h3>
+                <h3>Your cart is empty</h3>
             </div>
         `);
     }
