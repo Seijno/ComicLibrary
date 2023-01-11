@@ -1,4 +1,4 @@
-<?php include "config.php"; ?>
+<?php include "connect.php"; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,10 +16,10 @@
             <h2>comiclibrary</h2>
           </div>
           <div class="col-6 d-flex flex-row-reverse">
-            <div class="p-2"><a href="#">Login</a></div>
-            <div class="p-2"><a href="#">Cart</a></div>
-            <div class="p-2"><a href="#">Library</a></div>
-            <div class="p-2"><a href="#">Shop</a></div>
+            <div class="p-2"><a href="login.php">Login</a></div>
+            <div class="p-2"><a href="cart.php">Cart</a></div>
+            <div class="p-2"><a href="library.php">Library</a></div>
+            <div class="p-2"><a href="store.php">Shop</a></div>
           </div>
         </div>
       </div>
@@ -27,9 +27,37 @@
     <div class="py-5"></div>
     <section id="content">
       <div class="container">
-        <div class="row justify-conent-center">
-          <div class="col-12 text-center"><h3></h3></div>
-          <!-- Hier komt content. -->
+        <div class="row justify-content-center">
+          <div class="py-2"></div>
+          <div class="col-12 text-center"><h3>De grootste online stripboeken bib.</h3></div>
+          <div class="col-6 py-5">
+            <h4><a href="#">Nieuw</a></h4><br>
+            <h4><a href="#">Binnenkort</a></h4><br>
+            <h4><a href="#">Contact</a></h4>
+          </div>
+          <div class="col-6">
+            <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="../img/topg.jpg" class="d-block img-fluid" alt="...">
+                </div>
+                <div class="carousel-item">
+                  <img src="../img/manga.jpg" class="d-block img-fluid" alt="...">
+                </div>
+                <div class="carousel-item">
+                  <img src="../img/annefrank.jpg" class="d-block img-fluid" alt="...">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
