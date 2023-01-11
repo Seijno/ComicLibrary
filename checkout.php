@@ -11,6 +11,10 @@ include_once("connect.php");
     <title>Checkout</title>
 </head>
 <body>
+    <h2>Checkout</h2>
+    <p>Thank you for your purchase.</p>
+    <p>Click <a href='library.php'>here</a> to view your books.</p>
+
     <?php
     // check if user is logged in before checkout
     if (isset($_POST['buy'])) {
@@ -23,20 +27,36 @@ include_once("connect.php");
         // redirect to cart page if cart post data is empty
         header('Location: cart.php');
     }
-    
-    // display the post data
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    
-    // delete cart data from local storage
-    // echo "<script>localStorage.removeItem('cart');</>";
 
+    // add books to users library
+    $query = "SELECT * FROM library WHERE user_id = :user_id";
+    $statement = $conn->prepare($query);
+    $statement->bindValue(':user_id', $_SESSION['id']);
+    $statement->execute();
+    $library = $statement->fetchAll();
+    $statement->closeCursor();
+
+    // check if books are already in library
+    foreach ($_POST['id'] as $book) {
+        $inLibrary = false;
+        foreach ($library as $item) {
+            if ($item['book_id'] == $book) {
+                $inLibrary = true;
+            }
+        }
+        // if not in library add to library
+        if (!$inLibrary) {
+            $query = "INSERT INTO library (user_id, book_id) VALUES (:user_id, :book_id)";
+            $statement = $conn->prepare($query);
+            $statement->bindValue(':user_id', $_SESSION['id']);
+            $statement->bindValue(':book_id', $book);
+            $statement->execute();
+            $statement->closeCursor();
+        }
+    }
     ?>
 
-    <!-- create a checkout page -->
-    <h2>Checkout</h2>
-    <p>Thank you for your purchase.</p>
-    <p>Click <a href="library.php">here</a> to return view your books.</p>
+    <!-- delete cart data -->
+    <script>localStorage.removeItem('cart');</script>
 </body>
 </html>

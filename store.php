@@ -56,21 +56,23 @@
 
         echo "
         <script>
-            let cart = localStorage.getItem('cart');
-            if (cart == null) {
-                let products = [];
-            } else {
-                let products = JSON.parse(cart);
-            }
-
+        let cart = localStorage.getItem('cart');
+        if (cart == null) {
+            let products = [];
             let product = {id: $id, title: '$title', price: $price, image: '$image'};
             products.push(product);
             localStorage.setItem('cart', JSON.stringify(products));
+        } else {
+            let products = JSON.parse(cart);
+            let product = {id: $id, title: '$title', price: $price, image: '$image'};
+            products.push(product);
+            localStorage.setItem('cart', JSON.stringify(products));
+        }
+
+            
         </script>
         ";
     }
-    
-
     ?>
 </body>
 </html>
