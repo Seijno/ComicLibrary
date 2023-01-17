@@ -1,0 +1,24 @@
+body{
+    overflow-x: hidden;
+}
+#header{
+    background: red;
+    position: fixed;
+    z-index: 100;
+}
+#header a{
+   color: white;
+}
+#footer{
+    background:red;
+    text-decoration: none;
+}
+#footer h6{
+    color: white;
+}
+a{
+    text-decoration: none;
+}
+#carousel img{
+    max-height: 400px;
+}
