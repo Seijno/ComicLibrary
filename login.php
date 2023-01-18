@@ -58,7 +58,7 @@ if (isset($_SESSION['username'])) {
 
 <?php
  include "footer.php";
-    // Check if the username and password fields are set
+    // Check if the username and password fields are set commit
     if (isset($_POST['username']) && isset($_POST['password'])) {
         // Check if the user is in the database
         $query = "SELECT * FROM user WHERE username = :username";
