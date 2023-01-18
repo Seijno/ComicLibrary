@@ -7,21 +7,20 @@ if (empty($_SESSION)) {
     header("Location: index.php");
 }
 
-include "../connect.php";
 
 function getAllAccounts() {
-    // include "../connect.php";
+    include "../connect.php";
+    $query = $conn->prepare("SELECT * FROM user");
+    $query->execute();
 
-    // $query = $conn->prepare("SELECT * FROM user");
-    // $query->execute();
+    $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    // $result = $query->fetchAll(PDO::FETCH_ASSOC);
-
-    // foreach ($result as $user) {
-    //     echo $user["email"];
-        
-    // }
-
+    
+    foreach ($result as $user) {
+        $id = $user["id"];
+        echo $user["email"];
+        echo " <button><a href='edit_user.php?id=$id'>Edit</a></button>";
+    }
 }
 
 ?>
@@ -35,19 +34,6 @@ function getAllAccounts() {
     <title>Document</title>
 </head>
 <body>
-    <!-- <?php getAllAccounts(); ?> -->
-    <?php 
-
-        $query = $conn->prepare("SELECT * FROM user");
-        $query->execute();
-
-        $result = $query->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($result as $user) {
-            echo $user["email"];
-            
-        }
-
-    ?>
+    <?php getAllAccounts(); ?>
 </body>
 </html>
