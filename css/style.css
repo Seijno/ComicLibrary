@@ -1,5 +1,6 @@
 body{
     overflow-x: hidden;
+    font-family: 'Roboto', sans-serif;
 }
 #header{
     background: red;
@@ -21,4 +22,10 @@ a{
 }
 #carousel img{
     max-height: 400px;
+}
+#form{
+    background-color: gray;
+}
+#loginform{
+    color: white;
 }
