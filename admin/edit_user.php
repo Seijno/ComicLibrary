@@ -71,8 +71,8 @@ if (!$result) {
                     <label for="role">Role: <?php echo $role; ?></label>
                 </div>
 
-                <button class="w-100 btn btn-lg btn-danger" name="delete" type="submit">Delete</button>
-                <button class="w-100 btn btn-lg btn-primary" name="save" type="submit">Save</button>
+                <button class="w-100 btn mt-2 btn-lg btn-danger" name="delete" type="submit">Delete</button>
+                <button class="w-100 btn mt-1 btn-lg btn-primary" name="save" type="submit">Save</button>
             </form>
         </main>
 </body>
@@ -83,7 +83,11 @@ if (!$result) {
 include "../connect.php";
 
 if (isset($_POST["save"])) {
-    
     $query = $conn->prepare("UPDATE user SET username=?, role=? WHERE id = $id");
     $query->execute([$_POST["username"], $_POST["role"]]);
+}
+
+if (isset($_POST["delete"])) {
+    $query = $conn->prepare("DELETE FROM user WHERE id = $id");
+    $query->execute();
 }
