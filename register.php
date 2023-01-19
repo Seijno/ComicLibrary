@@ -12,6 +12,7 @@ if (isset($_SESSION['username'])) {
             <div class="justify-content-center row">
                 <div class="col-5 text-center" id="form">
                     <p class="py-3">Welkom!</p>
+                    <!-- register form -->
                     <form method="post" action="store.php">
                         <label class="py-3" for="email">Email:</label>
                         <input type="email" id="email" name="email" placeholder="pieter@gmail.com" required>
