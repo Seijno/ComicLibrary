@@ -1,36 +1,40 @@
-<?php
-
-// check if user is already logged in if so redirect to store page
+<?php include "connect.php";
+// check if useris already logged in if so redirect to store page
 if (isset($_SESSION['username'])) {
     header('Location: store.php');
 }
-
-include_once("connect.php");
-?>
-
-<!DOCTYPE html>
+ ?>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
-    <form action="register.php" method="post">
-        <label for="email">E-mail</label>
-        <input type="email" name="email" id="email" required>
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" required>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" name="confirmPassword" id="confirmPassword" required>
-        <input type="submit" value="Register">
-    </form>
-
+<?php include "header.php"; ?>
+    <section id="loginform">
+        <div class="container">
+            <div class="justify-content-center row">
+                <div class="col-5 text-center" id="form">
+                    <p class="py-3">Welkom!</p>
+                    <form method="post" action="store.php">
+                        <label class="py-3" for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="pieter@gmail.com" required>
+                        <br>
+                        <label class="py-3" for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Pieter" required>
+                        <br>
+                        <label class="py-3" for="password">Password:</label>
+                        <input type="password" name="password" id="password" placeholder="password" required>
+                        <br>
+                        <label class="py-3" for="confirmPassword">Confirm password:</label>
+                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm password" required>
+                        <br>
+                        <button class="w-100 btn btn-lg btn-danger" type="submit">Sign up</button>
+                        <div class="text-center py-2">
+                            <p>already a account here? Login <a href="login.php">here</a>!</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     <?php
-
+    include "footer.php";
     if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirmPassword'])) {
         // Check if the password and confirm password fields match 
         if ($_POST['password'] == $_POST['confirmPassword']) {
@@ -51,14 +55,6 @@ include_once("connect.php");
                 $statement->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT));
                 $statement->execute();
                 $statement->closeCursor();
-
-                // Send confirmation email to user (werkt niet zonder mail server)
-                // $to = $_POST['email'];
-                // $subject = "Comic Library Registration";
-                // $message = "Thank you for registering with Comic Library. You can now log in to your account.";
-                // mail($to, $subject, $message);                
-
-                // Redirect to the login page
                 header("Location: login.php");
             } else {
                 echo "User already exists";
@@ -68,5 +64,3 @@ include_once("connect.php");
         }
     }
     ?>
-</body>
-</html>
