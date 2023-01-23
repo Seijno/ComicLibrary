@@ -7,25 +7,20 @@ if (empty($_SESSION)) {
     header("Location: login.php");
 }
 
+// Get books that user has added to library
 function getBooks() {
-
-    include "connect.php";
-
+    include_once "connect.php";
     $query = $conn->prepare("SELECT * FROM library WHERE user_id = :id");
     $query->bindParam(":id", $_SESSION["id"]);
     $query->execute();
+    $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    $result = $query->fetch(PDO::FETCH_ASSOC);
-
+    // Display books
     if ($result) {
-        $array = str_replace(",", " ", $result["book_id"]);
-        $array = explode(" ", $array);
-        
-        foreach ($array as $book) {
+        foreach ($result as $book) {
             $query = $conn->prepare("SELECT * FROM book WHERE id = :id");
-            $query->bindParam(":id", $book);
+            $query->bindParam(":id", $book["book_id"]);
             $query->execute();
-
             $result = $query->fetch(PDO::FETCH_ASSOC);
 
             if ($result) {
@@ -48,12 +43,12 @@ function getBooks() {
 </head>
 <body>
     <form action="" method="post">
-        <input type="search" name="search" id="search">
-        <input type="submit" name="submit" value="Search">
+        <input type="search" name="search_input" id="search_input">
+        <input type="submit" name="search" value="Search">
     </form>
-    <hr>
     <?php 
-        if (!isset($_POST["submit"]) || $_POST["search"] == "") {
+        // If search is empty/not set, get all books
+        if (!isset($_POST["search"]) || $_POST["search"] == "") {
             getBooks();
         } 
     ?>
@@ -62,32 +57,26 @@ function getBooks() {
 
 <?php
 
-include "connect.php";
+include_once "connect.php";
 
-if (isset($_POST["submit"])) {
-    $query = $conn->prepare("SELECT * FROM library WHERE user_id = :id");
-    $query->bindParam(":id", $_SESSION["id"]);
-    $query->execute();
+// Search for books in library
+if (isset($_POST['search'])) {
+    $query = "SELECT library.user_id, library.book_id, book.title, book.image FROM library INNER JOIN book ON library.user_id = :user_id AND library.book_id = book.id WHERE book.title LIKE :search";
+    $statement = $conn->prepare($query);
+    $statement->bindValue(':user_id', $_SESSION["id"]);
+    $statement->bindValue(':search', "%" . $_POST['search_input'] . "%");
+    $statement->execute();
+    $books = $statement->fetchAll();
+    $statement->closeCursor();
 
-    $result = $query->fetch(PDO::FETCH_ASSOC);
-
-    if ($result) {
-        $array = str_replace(",", " ", $result["book_id"]);
-        $array = explode(" ", $array);
-        
-        foreach ($array as $book) {
-            $query = $conn->prepare("SELECT * FROM book WHERE id = :id AND title = :title");
-            $query->bindParam(":id", $book);
-            $query->bindParam(":title", $_POST["search"]);
-            $query->execute();
-
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-
-            if ($result) {
-                $id = $result["id"];
-                echo "<a href='read_pdf.php?id=$id' target='_blank'>" . $result["title"] . "</a><br>";
-            }
+    // Display books
+    if ($books) {
+        foreach ($books as $book) {
+            $id = $book["book_id"];
+            echo "<a href='read_pdf.php?id=$id' target='_blank'>" . $book["title"] . "</a><br>";
         }
+    } else {
+        echo "No books found";
     }
 }
 
