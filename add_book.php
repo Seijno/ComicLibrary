@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add book</title>
-</head>
-<body>
+<?php include "header.php"; ?>  
     <!-- Form to add a book to database -->
     <h2>Add Book</h2>
     <form action="add_book.php" enctype="multipart/form-data" method="post">
