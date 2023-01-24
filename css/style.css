@@ -29,4 +29,52 @@ a{
 #loginform{
     color: white;
 }
+
+/* store page */
+.card {
+    --bs-gutter-x: 1px !important;
+    --bs-gutter-y: 1.5rem !important;
+}
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    min-height: 250px;
+    max-height: 250px;
+    object-fit: cover;
+}
+#shoppingCart {
+    position: sticky;
+    top: 50vh;
+    z-index: 100;
+}
+#shoppingCart i {
+    color: rgb(27, 27, 27);
+    font-size: 2rem;
+}
+#cart-count {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    bottom: 15px;
+    left: 15px;
+    background-color: gray;
+    color: white;
+    padding: 7.5px 0 0 0;
+    font-size: .6em;
+    border-radius: 50%;
+    text-align: center;
+}
+
+/* library page */
+table {
+    border-collapse: separate;
+    border-spacing:0 10px;
+}
+.delete-btn{
+    cursor: pointer;
+}
+#coverPreview,
+#coverImage{
+    height: 350px;
+}
 /* commit */
