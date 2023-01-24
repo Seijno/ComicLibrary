@@ -1,9 +1,12 @@
 <?php
 
-session_start();
-$session = session_id();
+// if session is not started, start session
+if (!isset($_SESSION)) {
+    session_start();
+}
 
-if (empty($_SESSION)) {
+// if user is not logged in, redirect to login page
+if (!isset($_SESSION['id'])) {
     header("Location: login.php");
 }
 ?>

@@ -19,7 +19,18 @@
             <h2>comiclibrary</h2>
           </div>
           <div class="col-6 d-flex flex-row-reverse">
-            <div class="p-2"><a href="login.php">Login</a></div>
+            <?php
+            if (!isset($_SESSION)) {
+              session_start();
+            }
+
+            // if user is logged in, show logout button else login button
+            if (isset($_SESSION["id"])) {
+              echo "<div class='p-2'><a href='?logout'>Logout</a></div>";
+            } else {
+              echo "<div class='p-2'><a href='login.php'>Login</a></div>";
+            }
+            ?>
             <div class="p-2"><a href="cart.php">Cart</a></div>
             <div class="p-2"><a href="library.php">Library</a></div>
             <div class="p-2"><a href="store.php">Shop</a></div>
@@ -29,4 +40,12 @@
     </section>
     <div class="py-5"></div>
     <div class="py-5"></div>
+
+    <?php 
+    // if logout is set, destroy session and redirect to login page
+    if (isset($_GET["logout"])) {
+      session_destroy();
+      header("Location: login.php");
+    }
+    ?>
     <!-- commit -->
