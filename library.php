@@ -6,78 +6,167 @@ $session = session_id();
 if (empty($_SESSION)) {
     header("Location: login.php");
 }
-
-// Get books that user has added to library
-function getBooks() {
-    include_once "connect.php";
-    $query = $conn->prepare("SELECT * FROM library WHERE user_id = :id");
-    $query->bindParam(":id", $_SESSION["id"]);
-    $query->execute();
-    $result = $query->fetchAll(PDO::FETCH_ASSOC);
-
-    // Display books
-    if ($result) {
-        foreach ($result as $book) {
-            $query = $conn->prepare("SELECT * FROM book WHERE id = :id");
-            $query->bindParam(":id", $book["book_id"]);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-
-            if ($result) {
-                $id = $result["id"];
-                echo "<a href='read_pdf.php?id=$id' target='_blank'>" . $result["title"] . "</a><br>";
-            }
-        }
-    }
-}
-
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="" method="post">
-        <input type="search" name="search_input" id="search_input">
-        <input type="submit" name="search" value="Search">
-    </form>
-    <?php 
-        // If search is empty/not set, get all books
-        if (!isset($_POST["search"]) || $_POST["search"] == "") {
-            getBooks();
-        } 
-    ?>
+
+<?php include "header.php"; ?>   
+    <div class="container">
+        <div id='library' class="library container py-4">
+            <div class="row justify-content-start gx-5">
+                <form action="" method="post" class="col-12 col-sm-6 col-md-8 d-flex">
+                    <input type="search" name="search_input" id="search_input" class="py-2 form-control">
+                    <input type="submit" name="search" value="Search" class="py-2 px-3 ms-2 btn btn-primary">
+                </form>
+            </div>
+
+            <div class="row justify-content-center gy-5 gx-5">
+                <div class="col-12 col-sm-6 col-md-8">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="library-list">
+                            <?php 
+                                // if search is empty/not set, get all books else search for books
+                                if (!isset($_POST["search"]) || $_POST["search"] == "") {
+                                    getBooks();
+                                } else {
+                                    searchBooks();
+                                }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4">
+                    <div id="coverPreview" class="bg-light">
+                        <img id="coverImage" class="p-4 mx-auto">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // display book cover if link is hovered
+        var links = document.getElementsByClassName("bookLink");
+        for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener("mouseover", function(e) {
+                // get book id from the href link
+                var id = e.target.href.split("=")[1];
+
+                // get book image and change source of cover image
+                var request = new XMLHttpRequest();
+                request.open("GET", "get_book.php?id=" + id, true);
+                request.send();
+                request.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // parse image from json
+                        var book = JSON.parse(this.responseText);
+                        var coverImage = document.getElementById("coverImage");
+                        coverImage.style.display = "block";
+                        coverImage.src = "data:image/jpeg;base64," + book[0].image;
+                    }
+                }
+            });
+
+            // hide image when mouse leaves link
+            links[i].addEventListener("mouseout", function() {
+                var coverImage = document.getElementById("coverImage");
+                coverImage.style.display = "none";
+            });
+        }
+
+        // confirm deletion of book preventing default redirect if user cancels
+        function confirm_deletion() {
+            if (confirm("Are you sure you want to delete this book?") == true) {
+            } else {
+                event.preventDefault();
+            }
+        }
+
+
+    </script>
+
 </body>
 </html>
 
 <?php
-
-include_once "connect.php";
-
-// Search for books in library
-if (isset($_POST['search'])) {
-    $query = "SELECT library.user_id, library.book_id, book.title, book.image FROM library INNER JOIN book ON library.user_id = :user_id AND library.book_id = book.id WHERE book.title LIKE :search";
+// get books that user has added to library
+function getBooks() {
+    include "connect.php";
+    $query = "SELECT library.user_id, library.book_id, book.title, book.description, book.image FROM library INNER JOIN book ON library.user_id = :user_id AND library.book_id = book.id";
     $statement = $conn->prepare($query);
     $statement->bindValue(':user_id', $_SESSION["id"]);
-    $statement->bindValue(':search', "%" . $_POST['search_input'] . "%");
+    $statement->execute();
+    $books = $statement->fetchAll();
+    $statement->closeCursor();
+    
+    displayBooks($books);
+}
+
+// search for books in library by title, genre or author
+function searchBooks() {
+    include "connect.php";
+    $query = "SELECT library.user_id, library.book_id, book.title, book.description, book.image FROM library INNER JOIN book ON library.user_id = :user_id AND library.book_id = book.id AND (title LIKE :search OR genre LIKE :search OR author LIKE :search)";
+    $statement = $conn->prepare($query);
+    $statement->bindValue(':user_id', $_SESSION["id"]);
+    $statement->bindValue(':search', "%" . $_POST["search_input"] . "%");
     $statement->execute();
     $books = $statement->fetchAll();
     $statement->closeCursor();
 
-    // Display books
+    displayBooks($books);
+}
+
+// display books in a table
+function displayBooks($books) {
     if ($books) {
         foreach ($books as $book) {
             $id = $book["book_id"];
-            echo "<a href='read_pdf.php?id=$id' target='_blank'>" . $book["title"] . "</a><br>";
+            $title = $book["title"];
+            $description = $book["description"];
+
+            // echo "<tr><td><a class='bookLink' href='read_pdf.php?id=$id' target='_blank'>" . $book["title"] . "</a></td><td>" . $book["description"] . "</td><td><a onclick='confirm_deletion()' class='deleteButton link-danger' href='library.php?remove=$id'><i class='delete-btn bi bi-trash3'></i></a></td></tr>";
+        
+            echo "
+            <tr>
+                <td class='align-middle'>
+                    <a class='bookLink mb-0' href='read_pdf.php?id=$id' target='_blank' style='font-weight: 500;'>$title</a>
+                </td>
+                <td class='align-middle'>
+                    <p class='mb-0' style='font-weight: 500;'>$description</p>
+                </td>
+                <td class='float-end'>
+                    <a onclick='confirm_deletion()' class='deleteButton link-danger' href='library.php?remove=$id'><i class='delete-btn bi bi-trash3'></i></a>
+                </td>
+            </tr>
+            ";
+        
         }
+
     } else {
         echo "No books found";
     }
 }
 
+// remove book from user library
+if (isset($_GET["remove"])) {
+    include "connect.php";
+    $query = "DELETE FROM library WHERE user_id = :user_id AND book_id = :book_id";
+    $statement = $conn->prepare($query);
+    $statement->bindValue(':user_id', $_SESSION["id"]);
+    $statement->bindValue(':book_id', $_GET["remove"]);
+    $statement->execute();
+    $statement->closeCursor();
+    echo "<script>location.replace('library.php');</script>";
+
+}
 ?>
