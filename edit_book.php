@@ -74,5 +74,6 @@ $statement->closeCursor();
     <input type="submit" name="update_book" value="Update Book"><br>
     <a href="overview.php">Back to overview</a>
 </form>
+<?php include "footer.php"; ?>
 </body>
 </html>

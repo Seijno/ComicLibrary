@@ -19,7 +19,9 @@
           <div class="col-4">
             <div class="text-center">
               <h6>Navigatie</h6>
-              <a href="#">upcoming</a>
+              <a href="store.php">Shop</a><br>
+              <a href="library.php">Library</a><br>
+              <a href="cart.php">Cart</a>
             </div>
           </div>
         </div>

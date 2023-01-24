@@ -57,6 +57,7 @@ include_once("connect.php");
         echo "</tr>";
     }
     echo "</table>";
+    include "footer.php";
     ?>
 </body>
 </html>
