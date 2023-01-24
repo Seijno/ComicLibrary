@@ -2,7 +2,7 @@
 // Get the database connection
 require_once('connect.php');
 
-// Get the id from the url and 
+// Get the id from the url
 $id = $_GET['id'];
 
 // Get the book from the database
@@ -18,18 +18,9 @@ if (empty($book)) {
     // if the book does not exist redirect to the store page
     header('Location: store.php');
 }
-
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $book['title']; ?></title>
-</head>
-<body>
+<?php include "header.php"; ?>  
     <h2>Product Information</h2>
 
     <?php    
