@@ -53,7 +53,6 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] == 0) {
                             ?></tbody>
                         </table>
                     </div>
-                    <!-- <a href="add_book.php" class="btn btn-dark">Add Book</a> -->
                 </div>
             </div>
         </div>
@@ -71,7 +70,7 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] == 0) {
 </html>
 
 <?php
-// get books that the store owner has in his store
+// get books that the store owner has in his store 
 function getBooks() {
     include "connect.php";
 
@@ -140,7 +139,7 @@ if (isset($_GET["remove"])) {
     include "connect.php";
 
     // Check if book belongs to the store owner that is logged in and delete it
-    $query = "DELETE book FROM book INNER JOIN store ON book.store_id = store.owner_id WHERE store.owner_id = :user_id AND book.id = :book_id";
+    $query = "DELETE book FROM book INNER JOIN store ON book.store_id = store.id WHERE store.owner_id = :user_id AND book.id = :book_id";
     $statement = $conn->prepare($query);
     $statement->bindValue(':user_id', $_SESSION["id"]);
     $statement->bindValue(':book_id', $_GET["remove"]);
