@@ -115,10 +115,6 @@
         ?>
         
     </script>
-<<<<<<< HEAD
-
-=======
->>>>>>> 85fbf4da5e8c2f3b982c623d04d79a7a729384f8
     <?php include "footer.php"; ?>
 </body>
 </html>
