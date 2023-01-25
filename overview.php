@@ -75,7 +75,7 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] == 0) {
 function getBooks() {
     include "connect.php";
 
-    $query = "SELECT book.id, book.title, book.description, book.price FROM book INNER JOIN store ON book.store_id = store.owner_id AND store.owner_id = :user_id";
+    $query = "SELECT book.id, book.title, book.description, book.price FROM book INNER JOIN store ON book.store_id = store.id AND store.owner_id = :user_id";
     $statement = $conn->prepare($query);
     $statement->bindValue(':user_id', $_SESSION["id"]);
     $statement->execute();
@@ -88,7 +88,7 @@ function getBooks() {
 // search for books in store by title
 function searchBooks() {
     include "connect.php";
-    $query = "SELECT book.id, book.title, book.description, book.price FROM book INNER JOIN store ON book.store_id = store.owner_id AND store.owner_id = :user_id AND (book.title LIKE :search)";
+    $query = "SELECT book.id, book.title, book.description, book.price FROM book INNER JOIN store ON book.store_id = store.id AND store.owner_id = :user_id AND (book.title LIKE :search)";
     $statement = $conn->prepare($query);
     $statement->bindValue(':user_id', $_SESSION["id"]);
     $statement->bindValue(':search', "%" . $_POST["search_input"] . "%");
