@@ -10,12 +10,14 @@
     $statement->closeCursor();
     ?>
 
-    <div id="shoppingCart" class="mx-3">
+    <div id="shoppingCart" class="ms-3">
         <a href="./cart.php"><i class="bi bi-cart4"></i></a>
         <a href="./cart.php"><span id="cart-count" class="badge badge-pill badge-danger">0</span></a>
     </div>
 
-    <div class="container mx-auto">
+    <div class="container mx-auto mb-5">
+        <h2 class="row">Store</h2>
+        
         <div class="row justify-content-between align-items-center">
             <?php
             foreach ($books as $book) {
@@ -24,15 +26,14 @@
                 $price = $book['price'];
                 $image = $book['image'];
 
-
                 echo "
                 <div class='card' style='width: 18rem;'>
-                    <img class='card-img-top max-height:50px !important; width:100%;' src='data:image/jpeg;base64,".base64_encode($image)." alt='Book cover'/>
+                    <img class='card-img-top' src='data:image/jpeg;base64,".base64_encode($image)."' alt='Book cover'/>
                     <div class='card-body'>
-                        <a href='./product.php?id=".$id."'><h3 class='card-title'>$title</h3></a>
+                        <a href='./product.php?id=".$id."'><h3 class='card-title text-nowrap'>$title</h3></a>
                         <p class='card-text'>€$price</p>
                         <form method='post'>
-                            <input type='hidden' name='id' value='$id'>
+                            <input type='hidden' name='id[]' value='$id'>
                             <button type='submit' class='btn btn-primary' name='add_to_cart'>Add to cart</button>
                         </form>
                     </div>
@@ -75,6 +76,8 @@
         // get and set amount of books in cart
         function getCartCount() {
             let shopping_cart = localStorage.getItem('cart');
+            console.log(shopping_cart);
+
             if (shopping_cart != null) {
                 let books = removeDuplicates(JSON.parse(shopping_cart));
                 document.getElementById('cart-count').innerHTML = books.length;
@@ -84,7 +87,7 @@
         <?php
         // if add to cart button is pressed add the book to the cart
         if (isset($_POST['add_to_cart'])) {
-            $id = $_POST['id'];
+            $id = $_POST['id'][0];
             $query = "SELECT * FROM book WHERE id = :id";
             $statement = $conn->prepare($query);
             $statement->bindValue(':id', $id);
@@ -93,20 +96,18 @@
             $statement->closeCursor();
 
             $id = $book['id'];
-            $title = $book['title'];
-            $price = $book['price'];
 
             // add book to local storage cart
             echo "
                 let cart = localStorage.getItem('cart');
                 if (cart == null) {
                     let products = [];
-                    let product = {id: $id, title: '$title', price: $price};
+                    let product = {id: $id};
                     products.push(product);
                     localStorage.setItem('cart', JSON.stringify(products));
                 } else {
                     let products = JSON.parse(cart);
-                    let product = {id: $id, title: '$title', price: $price};
+                    let product = {id: $id};
                     products.push(product);
                     localStorage.setItem('cart', JSON.stringify(products));
                 }";
@@ -114,5 +115,7 @@
         ?>
         
     </script>
+
+    <?php include "footer.php"; ?>
 </body>
 </html>

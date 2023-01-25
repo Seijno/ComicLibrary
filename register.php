@@ -13,7 +13,7 @@ if (isset($_SESSION['username'])) {
                 <div class="col-5 text-center" id="form">
                     <p class="py-3">Welkom!</p>
                     <!-- register form -->
-                    <form method="post" action="store.php">
+                    <form method="post" action="register.php">
                         <label class="py-3" for="email">Email:</label>
                         <input type="email" id="email" name="email" placeholder="pieter@gmail.com" required>
                         <br>
@@ -39,6 +39,7 @@ if (isset($_SESSION['username'])) {
     if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirmPassword'])) {
         // Check if the password and confirm password fields match 
         if ($_POST['password'] == $_POST['confirmPassword']) {
+            
             // Check if the user is already in the database
             $query = "SELECT * FROM user WHERE username = :username OR email = :email"; 
             $statement = $conn->prepare($query);
@@ -47,6 +48,7 @@ if (isset($_SESSION['username'])) {
             $statement->execute();
             $user = $statement->fetch();
             $statement->closeCursor();
+
             // If the user is not in the database, create a new user
             if ($user == false) {
                 $query = "INSERT INTO user (username, email, password) VALUES (:username, :email, :password)";
@@ -56,7 +58,9 @@ if (isset($_SESSION['username'])) {
                 $statement->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT));
                 $statement->execute();
                 $statement->closeCursor();
-                header("Location: login.php");
+                // header("Location: login.php");
+                // get to login page using javascript
+                echo "<script>window.location.href = 'login.php';</script>";
             } else {
                 echo "User already exists";
             }

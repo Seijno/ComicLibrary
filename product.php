@@ -20,16 +20,20 @@ if (empty($book)) {
 }
 ?>
 
-<?php include "header.php"; ?>  
-    <h2>Product Information</h2>
+<?php include "header.php"; ?>
+    <div class="container">
+        <h2 class="pb-4">Product Info</h2>
 
-    <?php    
-    // Display the book
-    echo "<h3>" . $book['title'] . "</h3>";
-    echo "<p>Author: " . $book['author'] . "</p>";
-    echo "<p>Description: " . $book['description'] . "</p>";
-    echo "<p>Genre: " . $book['genre'] . "</p>";
-    echo "<p>Price: " . $book['price'] . "</p>";
-    ?>
+        <?php    
+        // Display the book
+        echo "<p><b class='pe-2'>" . $book['title'] . "</b>" . $book['author'] . "</p>";
+        // echo "<p>Author: " . $book['author'] . "</p>";
+        echo "<p>" . $book['description'] . "</p>";
+        echo "<p>Genre: " . $book['genre'] . "</p>";
+        echo "<p>Price: €" . $book['price'] . "</p>";
+        ?>
+
+        <a href="store.php" class="btn btn-primary">Back</a>
+    </div>
 </body>
 </html>

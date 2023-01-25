@@ -28,8 +28,9 @@ if (!isset($_SESSION['id'])) {
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Description</th>
+                                    <!-- sort table rows using sortTable -->
+                                    <th onclick="sortTable(1)">Title</th>
+                                    <th onclick="sortTable(2)">Description</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -94,8 +95,6 @@ if (!isset($_SESSION['id'])) {
                 event.preventDefault();
             }
         }
-
-
     </script>
 
 </body>
@@ -137,17 +136,15 @@ function displayBooks($books) {
             $title = $book["title"];
             $description = $book["description"];
 
-            // echo "<tr><td><a class='bookLink' href='read_pdf.php?id=$id' target='_blank'>" . $book["title"] . "</a></td><td>" . $book["description"] . "</td><td><a onclick='confirm_deletion()' class='deleteButton link-danger' href='library.php?remove=$id'><i class='delete-btn bi bi-trash3'></i></a></td></tr>";
-        
             echo "
             <tr>
                 <td class='align-middle'>
-                    <a class='bookLink mb-0' href='read_pdf.php?id=$id' target='_blank' style='font-weight: 500;'>$title</a>
+                    <a class='bookLink mb-0' href='read_pdf.php?id=$id' style='font-weight: 500;'>$title</a>
                 </td>
                 <td class='align-middle'>
                     <p class='mb-0' style='font-weight: 500;'>$description</p>
                 </td>
-                <td class='float-end'>
+                <td class='align-middle'>
                     <a onclick='confirm_deletion()' class='deleteButton link-danger' href='library.php?remove=$id'><i class='delete-btn bi bi-trash3'></i></a>
                 </td>
             </tr>
@@ -156,7 +153,7 @@ function displayBooks($books) {
         }
 
     } else {
-        echo "No books found";
+        echo "<script>document.getElementById('library-list').innerHTML = 'No books found';</script>";
     }
 }
 

@@ -37,6 +37,7 @@
 
 <script>
     var books = removeDuplicates(JSON.parse(localStorage.getItem('cart')));
+    
     // create an array to store prices
     var prices = [];
 
@@ -86,10 +87,9 @@
                             </td>
 
                             <td class="align-middle">
-                                <input type="hidden" name="id" value="${id}">
+                                <input type="hidden" name="id[]" value="${book.id}">
                                 <a class='removeButton link-danger' onclick='removeFromCart(${book.id})'><i class='delete-btn bi bi-x fs-4'></i></a>
                             </td>
-
                         </tr>
                         `);
                     }

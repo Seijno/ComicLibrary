@@ -3,15 +3,15 @@ include_once("connect.php");
 ?>
 
 <?php include "header.php"; ?>  
-
-    <h2>Checkout</h2>
-    <p>Thank you for your purchase.</p>
-    <p>Click <a href='library.php'>here</a> to view your books.</p>
+    <div class="container">
+        <h2>Checkout</h2>
+        <p>Thank you for your purchase.</p>
+        <p>Click <a href='library.php'>here</a> to view your books.</p>
+    </div>
 
     <?php
     // check if user is logged in before checkout
     if (isset($_POST['buy'])) {
-        session_start();
         if (!isset($_SESSION['id'])) {
             echo "<script>alert('You must create an account to buy books');
             window.location.href = 'register.php';</script>";
@@ -37,6 +37,7 @@ include_once("connect.php");
                 $inLibrary = true;
             }
         }
+
         // if not in library add to library
         if (!$inLibrary) {
             $query = "INSERT INTO library (user_id, book_id) VALUES (:user_id, :book_id)";

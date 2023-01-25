@@ -17,10 +17,7 @@ $arr[] = array(
     'description' => $book[4],
     'image' => base64_encode($book[5]),
     'id' => $book[6]
-
 ); 
-
-// echo json_encode(base64_encode($book[0]));
 
 echo json_encode($arr);
 ?>

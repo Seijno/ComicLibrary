@@ -1,50 +1,56 @@
-<?php
+<?php include "header.php"; ?>  
+    <div class="pdf-container container">
+        <div class="row">
+            <?php GetPDF(); ?>
 
-include "connect.php";
-
-session_start();
-$session = session_id();
-
-$query = $conn->prepare("SELECT * FROM library WHERE user_id = :id");
-$query->bindParam(":id", $_SESSION["id"]);
-$query->execute();
-
-$result = $query->fetch(PDO::FETCH_ASSOC);
-
-if ($result) {
-    $array = str_replace(",", " ", $result["book_id"]);
-    $array = explode(" ", $array);
-    
-    if (!in_array($_GET["id"], $array)) {
-        header("Location: library.php");
-    }
-}
-
-$query = $conn->prepare("SELECT * FROM book WHERE id = :id");
-$query->bindParam(":id", $_GET["id"]);
-$query->execute();
-
-$result = $query->fetch(PDO::FETCH_ASSOC);
-
-if ($result) {
-    $file = $result["pdf"];
-    header('Content-type: application/pdf');
-    echo $file;
-    exit();
-}   
-
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <?php echo base64_encode($pdf);?>
+            <div class="col-12">
+                <a href="library.php" class="btn btn-primary">Back</a>
+            </div>
+        </div>
+    </div>
+    <?php include "footer.php"; ?> 
 </body>
 </html>
+
+<?php
+// get the pdf file from the database and display it
+function GetPDF() {
+    include "connect.php";
+    AuthPDF();
+
+    $query = $conn->prepare("SELECT pdf FROM book WHERE id = :id");
+    $query->bindParam(":id", $_GET["id"]);
+    $query->execute();
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    if ($result) {
+        echo "<embed src='data:application/pdf;base64," . base64_encode($result["pdf"]) . "' type='application/pdf' class='vw-100'>'";
+    } else {
+        header("Location: library.php");
+    }  
+}
+
+// check if user owns the book they want to read
+function AuthPDF() {
+    include "connect.php";
+
+    // check if user is a store owner to determine which books they can read
+    if (isset($_SESSION["role"]) && $_SESSION["role"] == "2") {
+        // their own books & library books | store owner
+        $query = $conn->prepare("SELECT book_id FROM library WHERE user_id = :id AND book_id = :book_id UNION SELECT id FROM book WHERE store_id = :id AND id = :book_id");
+    } else {
+        // library books | user
+        $query = $conn->prepare("SELECT book_id FROM library WHERE user_id = :id AND book_id = :book_id");
+    }
+
+    $query->bindParam(":id", $_SESSION["id"]);
+    $query->bindParam(":book_id", $_GET["id"]);
+    $query->execute();
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    if (empty($result)) {
+        header("Location: library.php");
+    } 
+}
+
+?>

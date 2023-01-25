@@ -1,10 +1,14 @@
 <div class="py-5"></div>
     <section id="footer">
-      <div class="container">
+      <div class="container py-4">
         <div class="row justify-content-evenly">
           <div class="col-4">
             <div class="text-center">
               <h6>Nieuwsbrief</h6>
+              <form action="newsletter.php" method="post">
+                <input type="email" name="email" placeholder="email" required>
+                <button type="submit">Inschrijven</button>
+              </form>
             </div>
           </div>
           <div class="col-4">
@@ -19,7 +23,9 @@
           <div class="col-4">
             <div class="text-center">
               <h6>Navigatie</h6>
-              <a href="#">upcoming</a>
+              <a href="store.php">Shop</a><br>
+              <a href="library.php">Library</a><br>
+              <a href="cart.php">Cart</a>
             </div>
           </div>
         </div>

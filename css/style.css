@@ -32,20 +32,21 @@ a{
 
 /* store page */
 .card {
-    --bs-gutter-x: 1px !important;
+    --bs-gutter-x: 0px !important;
     --bs-gutter-y: 1.5rem !important;
 }
 .card-img-top {
     width: 100%;
-    height: 15vw;
-    min-height: 250px;
-    max-height: 250px;
+    height: 25vw;
+    min-height: 300px;
+    max-height: 350px;
     object-fit: cover;
 }
 #shoppingCart {
     position: sticky;
     top: 50vh;
-    z-index: 100;
+    height: 0;
+    z-index: 100; 
 }
 #shoppingCart i {
     color: rgb(27, 27, 27);
@@ -55,7 +56,7 @@ a{
     position: absolute;
     width: 1.5rem;
     height: 1.5rem;
-    bottom: 15px;
+    top: -10px;
     left: 15px;
     background-color: gray;
     color: white;
@@ -77,4 +78,14 @@ table {
 #coverImage{
     height: 350px;
 }
+
+/* read pdf page  */
+.pdf-container {
+    /* margin-top: -150px !important; */
+    transform: translateY(-50px) !important;
+}
+.pdf-container embed {
+    height: 750px;
+}
+
 /* commit */
