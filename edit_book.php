@@ -106,28 +106,3 @@ if (isset($_POST['update_book'])) {
 }
 
 ?>
-<h2>Edit Book</h2>
-<form action="edit_book.php" method="post">
-    <?php 
-    // if the result variable is set, display the result message
-    if (isset($result))
-        echo '<div id="result">' . $result . "</div><br>"; 
-    ?>
-    <input type="hidden" name="id" value="<?php echo $book['id']; ?>">
-    <label>Title:</label>
-    <input type="text" name="title" value="<?php echo $book['title']; ?>"><br>
-    <label>Author:</label>
-    <input type="text" name="author" value="<?php echo $book['author']; ?>"><br>
-    <label>Genre:</label>
-    <input type="text" name="genre" value="<?php echo $book['genre']; ?>"><br>
-    <label>Price:</label>
-    <input type="text" name="price" value="<?php echo $book['price']; ?>"><br>
-    <label>Cover image:</label>
-    <input type="file" name="image" value="<?php echo $book['image']; ?>"><br>
-
-    <label>&nbsp;</label>
-    <input type="submit" name="update_book" value="Update Book"><br>
-    <a href="overview.php">Back to overview</a>
-</form>
-</body>
-</html>
