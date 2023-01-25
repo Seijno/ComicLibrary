@@ -170,3 +170,4 @@ if (isset($_GET["remove"])) {
 
 }
 ?>
+<?php include "footer.php"; ?>

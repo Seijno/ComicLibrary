@@ -133,6 +133,7 @@ function displayBooks($books) {
     } else {
         echo "<script>document.getElementById('overview-list').innerHTML = 'No books found';</script>";
     }
+<<<<<<< HEAD
 }
 
 // remove book from store owner's store
@@ -149,3 +150,10 @@ if (isset($_GET["remove"])) {
     echo "<script>location.replace('overview.php');</script>";
 }
 ?>
+=======
+    echo "</table>";
+    include "footer.php";
+    ?>
+</body>
+</html>
+>>>>>>> 85fbf4da5e8c2f3b982c623d04d79a7a729384f8

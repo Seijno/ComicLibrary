@@ -52,5 +52,6 @@ include_once("connect.php");
 
     <!-- delete cart data -->
     <script>localStorage.removeItem('cart');</script>
+    <?php include "footer.php"; ?>
 </body>
 </html>
