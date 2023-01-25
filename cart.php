@@ -62,7 +62,7 @@
                     prices.push(price);
 
                     // display total price
-                    $('#total').html(`Total: €${prices.reduce((a, b) => a + b, 0)}`);
+                    $('#total').html(`Total: €${prices.reduce((a, b) => a + b, 0).toFixed(2)}`);
 
                     // display book to on cart list
                     $('#cart-list').append(`
